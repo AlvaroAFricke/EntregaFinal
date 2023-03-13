@@ -76,7 +76,7 @@ passport.use('register', new LocalStrategy({
     const usuario = await baseUsuarios.getByUsername(username)
     if (usuario) {
         logger.warn("Usuario ya registrado.")
-        return done('el usuario ya esta registrado', false)
+        return done(false)
     }
 
     const newUser = {
@@ -155,8 +155,8 @@ app.get('/faillogin', (req, res) => {
 })
 
 //----------------//
-// Rutas de datos //
-//----------------//
+// Autenticacion //
+//--------------//
 
 function requireAuthentication(req, res, next) {
     if (req.isAuthenticated()) {
@@ -170,8 +170,24 @@ function requireAuthentication(req, res, next) {
 // Ruta raiz //
 //-----------//
 
-app.get('/index', requireAuthentication, (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'index.html'))
+/**
+ * Esto deberia estar aparte en otro archivo
+ */
+
+import ContenedorProductosMongo from "../contenedores/ContenedorProductos.js";
+import ContenedorCarritosMongo from "../contenedores/ContenedorCarritos.js";
+
+const apiCarritos = new ContenedorCarritosMongo();
+const apiProductos = new ContenedorProductosMongo();
+
+app.get('/index', requireAuthentication, async (req, res) => {
+    res.render(path.join(__dirname, '../public', 'index.ejs'), {productos: await apiProductos.getAll(), carrito: await apiProductos.getAll()})
+})
+
+app.post('/enviarPedido', requireAuthentication, (req, res) => {
+    //Enviar mensaje del pedido y renderizar, muchas gracias
+    console.log("Gracias");
+    res.json({Gracias:"Gracias"})
 })
 
 //----------------//

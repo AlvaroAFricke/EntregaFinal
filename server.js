@@ -14,7 +14,7 @@ app.use(rutasProductos)
 app.use(rutasLoggin)
 
 //Puerto
-const PORT = 8080
+const PORT = process.env.PORT || 8080
 
 //Escucha del servidor
 app.listen(PORT, () => {

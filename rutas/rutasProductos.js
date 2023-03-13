@@ -54,9 +54,12 @@ routerProductos.post("/", admin, (req, res) => {
         req.body.stock
     );
 
-    baseProductos.save(producto)
-
-    logger.info("Producto Creado")
+    try {
+        baseProductos.save(producto)
+        logger.info("Producto Creado")
+    } catch (error) {
+        logger.warn("Error al registrar el producto.")
+    }
 
     res.json({Creado: "Ok"})
 

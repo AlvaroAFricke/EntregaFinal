@@ -12,7 +12,7 @@ class ContenedorProductosMongo {
 
     async getAll() {
         try {
-            const prods = await collection.find()
+            const prods = await modelo.find()
             return prods
         } catch (error) {
             console.log(error);
